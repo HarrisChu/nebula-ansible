@@ -11,3 +11,6 @@ packages
 
 poetry.lock
 pyproject.toml
+
+.history
+inventory

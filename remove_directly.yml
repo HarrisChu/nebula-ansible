@@ -1,0 +1,18 @@
+---
+- name: stop nebula-graph first
+  import_playbook: stop.yml
+
+- hosts: all
+  vars:
+    delete_type: binary
+    confirmed: "yes"
+  roles:
+    - remove
+
+
+- hosts: all
+  vars:
+    delete_type: data
+    confirmed: "yes"
+  roles:
+    - remove
