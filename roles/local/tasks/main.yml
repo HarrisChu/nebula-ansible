@@ -6,16 +6,6 @@
     that:
       - ansible_version.full is version('2.5', '>')
 
-- name: detect outbound network
-  shell: >
-    warn=no
-    curl -s --connect-timeout 10 github.com 2>/dev/null >/dev/null; echo $?
-  changed_when: false
-  register: outbound_network_st
-
-- name: set outbound network fact
-  set_fact: has_outbound_network={{ outbound_network_st.stdout.strip() == '0' }}
-
 - name: create a directory of downloads if it does not exist
   file:
     path: "{{ packages_dir }}"
@@ -27,13 +17,6 @@
     path: "{{ packages_dir }}/{{ nebula_packages.name }}"
   register: stat_result
 
-- name: verfiy the preparation
-  fail:
-    msg: "The Control Machine don't have access to the Internet to download nebula package, and the package is also not found in {{ packages_dir }} on the Control Machine."
-  when: 
-    - not has_outbound_network
-    - not stat_result.stat.exists
-
 - name: download nebula graph package
   get_url:
     url: "{{ nebula_packages.url }}"
@@ -43,5 +26,4 @@
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 2
   when: 
-    - has_outbound_network
     - force_download or not stat_result.stat.exists

@@ -1,16 +1,16 @@
 nebula_packages:
     name: 
         "{%- if install_source_type == 'GA' -%} 
-        nebula-graph-{{ nebula_version }}.{{ os_version }}.{{ arc }}.{{ pkg }}
+        nebula-{{ nebula_version }}.{{ os_version }}.{{ arc }}.{{ pkg }}
         {%- else -%} 
-        nebula-graph-{{ now()|yesterday_format }}-nightly.{{ os_version }}.{{ arc }}.{{ pkg }}
+        nebula-2021.08.11-nightly.{{ os_version }}.{{ arc }}.{{ pkg }}
         {%- endif -%}"
         
     version: 
         "{%- if install_source_type.lower() == 'ga' -%} 
         {{ nebula_version }}
         {%- else -%} 
-        {{ nebula_version }}-{{ now()|yesterday_format }}-nightly
+        {{ nebula_version }}-2021.08.11-nightly
         {%- endif -%}"
 
     url: 
